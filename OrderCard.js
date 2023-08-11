@@ -46,10 +46,10 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: 'bold',
-    color: 'grey', // Sua cor preferida para o texto em negrito
+    color: 'grey', 
   },
   lightText: {
-    color: 'grey', // Sua cor preferida para o texto não em negrito
+    color: 'grey',
   },
   button: {
     backgroundColor: '#4E54C8',
