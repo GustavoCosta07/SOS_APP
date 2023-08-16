@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const OrderCard = ({ orderNumber, description, openDate, directedDate }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.card}>
       <Text style={styles.orderNumber}>Ordem #{orderNumber}</Text>
@@ -13,7 +16,7 @@ const OrderCard = ({ orderNumber, description, openDate, directedDate }) => {
         <Text style={styles.boldText}>Direcionado dia:</Text>{" "}
         <Text style={styles.lightText}>{directedDate}</Text>
       </Text>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('OrderDetails', { orderNumber, description, openDate, directedDate })}>
         <Text style={styles.buttonText}>Acessar</Text>
       </TouchableOpacity>
     </View>
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
   },
   boldText: {
     fontWeight: 'bold',
-    color: 'grey', 
+    color: 'grey',
   },
   lightText: {
     color: 'grey',

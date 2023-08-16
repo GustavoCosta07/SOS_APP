@@ -1,14 +1,27 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { TouchableOpacity } from 'react-native';
-
-// Importar a barra de navegação superior
-import TopNav from './TopNav'; // Certifique-se de substituir o caminho pelo correto
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import TopNav from './TopNav';
 import WelcomeMessage from './WelcomeMessage';
 import CallInfo from './CallInfo';
 import OrderCard from './OrderCard';
 
 export default function HomeScreen({ navigation }) {
+  const [orders, setOrders] = useState([]);
+  
+  useEffect(() => {
+    // Função para fazer a solicitação à API e obter os dados das ordens
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch('https://grupofmv.app.br/api/v1/integracao/chamados'); // Substitua pela URL da sua API
+        const data = await response.json();
+        setOrders(data); // Atualiza o estado com os dados das ordens
+      } catch (error) {
+        console.error('Erro ao obter dados das ordens:', error);
+      }
+    };
+
+    fetchOrders(); // Chama a função de solicitação à API ao carregar a tela
+  }, []);
 
   const openMenu = () => {
     alert('Fazer o menu');
@@ -16,64 +29,20 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* Incluir a barra de navegação superior */}
       <TopNav title="SOS DOS ELEVADORES" onMenuPress={openMenu} />
       <WelcomeMessage username="Gustavo" />
-      <CallInfo callCount={8} countFontSize={30} />
-      <View style={styles.content}>
-        {/* <Text style={styles.title}>Bem-vindo!</Text> */}
-        {/* <Text style={styles.subtitle}>Você está logado.</Text> */}
-
-
-      </View>
+      <CallInfo callCount={orders.length} countFontSize={30} />
       <ScrollView style={styles.scrollView}>
-        <OrderCard
-          orderNumber={1}
-          description="Descrição da Ordem 1"
-          openDate="2023-08-11"
-          directedDate="2023-08-12"
-        />
-        <OrderCard
-          orderNumber={2}
-          description="Descrição da Ordem 2"
-          openDate="2023-08-11"
-          directedDate="2023-08-12"
-        />
-        <OrderCard
-          orderNumber={3}
-          description="Descrição da Ordem 3"
-          openDate="2023-08-11"
-          directedDate="2023-08-12"
-        />
-        <OrderCard
-          orderNumber={4}
-          description="Descrição da Ordem 4"
-          openDate="2023-08-11"
-          directedDate="2023-08-12"
-        />
-        <OrderCard
-          orderNumber={5}
-          description="Descrição da Ordem 5"
-
-        />
-        <OrderCard
-          orderNumber={6}
-          description="Descrição da Ordem 6"
-          openDate="2023-08-11"
-          directedDate="2023-08-12"
-        />
-        <OrderCard
-          orderNumber={7}
-          description="Descrição da Ordem 7"
-          openDate="2023-08-11"
-          directedDate="2023-08-12"
-        />
-        <OrderCard
-          orderNumber={8}
-          description="Descrição da Ordem 8"
-          openDate="2023-08-11"
-          directedDate="2023-08-12"
-        />
+        {orders.map(order => (
+          <OrderCard
+            key={order.id} // Certifique-se de ter um identificador único para cada ordem
+            orderNumber={order.idChamado}
+            description={order.idChamado}
+            openDate={order.chamadoDataReferencia}
+            directedDate={order.chamadoDataReferencia}
+            navigation={navigation}
+          />
+        ))}
       </ScrollView>
       <TouchableOpacity
         style={styles.logoutButton}
@@ -81,10 +50,13 @@ export default function HomeScreen({ navigation }) {
       >
         <Text style={styles.logoutButtonText}>Voltar</Text>
       </TouchableOpacity>
-
     </View>
   );
 }
+
+// Estilos...
+
+
 
 const styles = StyleSheet.create({
   container: {
