@@ -5,6 +5,8 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, StatusBar, Image }
 import HomeScreen from './HomeScreen';
 import OrderDetailsScreen from './OrderDetailsScreen';
 
+import HomeScreenTeste from './HomeScreenTeste';
+
 const Stack = createStackNavigator();
 
 function LoginScreen({ navigation }) {
@@ -32,7 +34,7 @@ function LoginScreen({ navigation }) {
       const responseData = await response.json();
   
       if (responseData.status === 1) {
-        navigation.navigate('Home');
+        navigation.navigate('HomeTeste');
       } else if (responseData.status === 2) {
         alert('Usuário ou senha incorretos.');
       } else if(responseData.status === 3){
@@ -82,6 +84,7 @@ export default function App() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="HomeTeste" component={HomeScreenTeste} options={{ headerShown: false }} />
         <Stack.Screen name="OrderDetails" component={OrderDetailsScreen} options={{ headerTitle: 'Detalhes da Ordem' }} />
       </Stack.Navigator>
     </NavigationContainer>
